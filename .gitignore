@@ -1,0 +1,24 @@
+.env
+.env.*
+!.env.example
+config/makima_token
+config/opencode_password
+config/vercel_token
+config/*.secret
+*.pem
+*.key
+*.p12
+*.pfx
+*.mobileprovision
+config/user-profile.txt
+config/opencode.json
+config/build_opencode_config.py
+data/
+.DS_Store
+.codegraph/
+SwiftChat/SwiftChat/Resources/AWAKENNING Personal Use.ttf
+__pycache__/
+.pytest_cache/
+*.pyc
+backups/
+BENCHMARK.md

@@ -1,0 +1,28 @@
+use_default_settings: true
+
+server:
+  secret_key: "makima-local-only-not-a-public-secret"
+  limiter: false
+  image_proxy: false
+
+search:
+  # La API JSON viene deshabilitada por defecto; sin esto SearXNG responde 403.
+  formats:
+    - html
+    - json
+  safe_search: 1
+  autocomplete: ""
+  default_lang: "es"
+
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 12.0
+  pool_connections: 20
+
+engines:
+  - name: duckduckgo
+    disabled: false
+  - name: brave
+    disabled: true
+  - name: wikipedia
+    disabled: false

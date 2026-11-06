@@ -1,0 +1,83 @@
+services:
+  gateway:
+    environment:
+      MAKIMA_OPENCODE_URL: http://opencode:4096
+    secrets:
+      - opencode_password
+    volumes:
+      - ./data/opencode-sessions:/data/opencode-sessions
+    depends_on:
+      - opencode
+
+  opencode:
+    # Built, not pulled: the upstream image has no node/npm/npx, so neither the Vercel CLI nor
+    # any framework build could run in it. opencode/Dockerfile adds that layer on top of the
+    # same pinned tag, so the upgrade path stays explicit.
+    build:
+      context: ./opencode
+      dockerfile: Dockerfile
+    image: makima-opencode:1.18.33-node
+    restart: unless-stopped
+    user: "10001:10001"
+    working_dir: /workspace
+    environment:
+      HOME: /workspace/.opencode-home
+      XDG_DATA_HOME: /workspace/.opencode-home/.local/share
+      XDG_CACHE_HOME: /workspace/.opencode-home/.cache
+      # The Engram MCP server runs as a local stdio subprocess and reads the shared SQLite
+      # store directly. It must live under the read-only rootfs's writable paths, so it is
+      # invoked from the read-only /opt/bin mount rather than an installed path.
+      ENGRAM_DATA_DIR: /data/engram
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'export OPENCODE_SERVER_PASSWORD="$$(cat /run/secrets/opencode_password)"; exec opencode serve --hostname 0.0.0.0 --port 4096'
+    secrets:
+      - opencode_password
+      # Vercel deploys run through `npx vercel --token $(cat /run/secrets/vercel_token)`. A file,
+      # not an env var, so it stays out of `docker inspect`.
+      - vercel_token
+    volumes:
+      - ./data/opencode-workspace:/workspace
+      # The publish directory. nginx serves this same host directory read-only (see
+      # docker-compose.yml), so a file written here is live on the web immediately: no build, no
+      # deploy script, no shell on the host. It is a SEPARATE host directory mounted inside the
+      # workspace on purpose -- mounting /workspace itself into nginx would put the agent's
+      # opencode.json and its session history on the public internet.
+      - ./data/web:/workspace/site
+      # Same engram_data volume the gateway's Engram runs on, mounted here so the makima
+      # agent reads and writes the identical memory. Engram is (re)started as uid 10001 to
+      # match this container; sharing a uid is what keeps the SQLite -wal/-shm files
+      # writable for both processes.
+      - engram_data:/data/engram
+      # Static engram 2.2.1 binary (go, no libc) extracted from the makima-engram image,
+      # so the OpenCode image does not need to be rebuilt to gain the memory tools.
+      - ./bin/engram:/opt/bin/engram:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    # Raised from 1g: the OpenCode process idles at ~514 MB, and a React/Vite task adds an npm
+    # process on top. At 1 GB the kernel OOM-killed the container mid-task, which surfaced as an
+    # unexplained "Something went wrong" on the phone. The host has ~12 GB available, so 4 GB
+    # costs nothing and leaves room for npm plus the Vercel CLI.
+    mem_limit: 4g
+    cpus: 1
+    networks: [private]
+
+  # Engram and the OpenCode makima agent now share the engram_data volume, so they must
+  # share a uid too. The image ships USER 10003; override to 10001 (OpenCode's uid) and
+  # chown the volume accordingly, otherwise the SQLite -wal/-shm side files (mode 600,
+  # owned by the creating uid) are unwritable for the other process. The gateway reaches
+  # Engram over its shared network namespace (network_mode: service:gateway) on
+  # 127.0.0.1:7437, which is unaffected by the uid.
+  engram:
+    user: "10001:10001"
+
+secrets:
+  opencode_password:
+    file: ./config/opencode_password
+  vercel_token:
+    file: ./config/vercel_token
