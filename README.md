@@ -142,6 +142,19 @@ The launch screen uses a system font by default. To use **Awakenning Personal Us
 
 The font file is intentionally excluded from Git. Its personal-use license does not grant the same rights as the project's MIT license; contact the author for commercial or other non-personal use. Do not commit or redistribute it without permission.
 
+### Change the assistant's personality
+
+For Normal and Fast modes, edit [`config/system-prompt.txt`](config/system-prompt.txt) on the server to describe the assistant's role, tone, language and behavior. For example:
+
+```text
+You are a helpful technical assistant. Respond clearly and concisely in English.
+Explain tradeoffs and ask for clarification when the request is ambiguous.
+```
+
+The gateway reads this file for each response, so an in-place edit normally applies to the next request without rebuilding. If your editor replaces the file rather than editing it in place, recreate the gateway to refresh its Docker bind mount: `docker compose up -d --force-recreate gateway`. Existing memories and the optional private `config/user-profile.txt` are also added as context and may influence responses. Keep personal information and secrets out of the shared prompt.
+
+**Super mode is different:** its personality comes from the OpenCode agent configuration (`opencode.json` in its workspace), not `config/system-prompt.txt`. A generic OpenCode configuration is not yet included; see the optional agent section below.
+
 ### Optional: OpenCode agent
 
 `docker-compose.opencode.yml` is an additional, more privileged integration, not a prerequisite for the core stack. It requires a separately reviewed OpenCode configuration, an Engram binary at `bin/engram`, writable workspace directories, a shared Engram volume with compatible ownership and `config/vercel_token` (an empty file if Vercel is not used). The existing local agent configuration is intentionally ignored because it contains personal information; a public generic template is not yet provided. Review the overlay, external providers, tool permissions and network exposure before deploying it.
