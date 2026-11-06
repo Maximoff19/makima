@@ -51,7 +51,7 @@ The app connects to the gateway over HTTPS. The gateway authenticates requests a
 | Gateway | Python, FastAPI, Uvicorn | Authentication, API and service orchestration |
 | Models | Ollama, Qwen 2.5 and Qwen 2.5 VL | Text and image understanding |
 | Speech | whisper.cpp, Kokoro, FFmpeg | Transcription and voice playback |
-| Persistence | Engram, SQLite, Docker volumes | Memory, agenda and response state |
+| Persistence | [Engram](https://github.com/Gentleman-Programming/engram), SQLite, Docker volumes | Memory, agenda and response state |
 | Optional tools | OpenCode, SearXNG, sandbox | Agent workflows, search and command execution |
 | Infrastructure | Docker Compose, Traefik / Coolify | Service deployment and HTTPS routing |
 
@@ -195,6 +195,10 @@ Open the Xcode project to build or run the iOS test schemes. These checks do not
 ## Fan project notice
 
 Makima is an unofficial fan project inspired by the character Makima from [*Chainsaw Man*](https://www.viz.com/chainsaw-man), created by Tatsuki Fujimoto. This project is not affiliated with, endorsed by, or sponsored by the creator or rights holders. The character and related intellectual property belong to their respective rights holders. This notice does not grant permission to use or redistribute protected material.
+
+## Acknowledgments
+
+Makima uses [Engram](https://github.com/Gentleman-Programming/engram), the persistent memory project built by [Alan Buscaglia (Gentleman Programming)](https://github.com/Gentleman-Programming). See the [Engram documentation](https://github.com/Gentleman-Programming/engram/blob/main/DOCS.md) and its [license](https://github.com/Gentleman-Programming/engram/blob/main/LICENSE) for more information. Engram is an independent project; its use does not imply endorsement of Makima.
 
 ## License
 
