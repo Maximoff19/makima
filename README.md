@@ -151,7 +151,7 @@ You are a helpful technical assistant. Respond clearly and concisely in English.
 Explain tradeoffs and ask for clarification when the request is ambiguous.
 ```
 
-The gateway reads this file for each response, so an in-place edit normally applies to the next request without rebuilding. If your editor replaces the file rather than editing it in place, recreate the gateway to refresh its Docker bind mount: `docker compose up -d --force-recreate gateway`. Existing memories and the optional private `config/user-profile.txt` are also added as context and may influence responses. Keep personal information and secrets out of the shared prompt.
+The gateway reads this file for each response, so an in-place edit normally applies to the next request without rebuilding. If your editor replaces the file rather than editing it in place, recreate the gateway and Engram to refresh the bind mount and shared network namespace: `docker compose up -d --no-deps --force-recreate gateway engram`. Existing memories and the optional private `config/user-profile.txt` are also added as context and may influence responses. Keep personal information and secrets out of the shared prompt.
 
 **Super mode is different:** its personality comes from the OpenCode agent configuration (`opencode.json` in its workspace), not `config/system-prompt.txt`. A generic OpenCode configuration is not yet included; see the optional agent section below.
 
