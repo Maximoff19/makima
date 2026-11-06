@@ -179,6 +179,10 @@ Open the Xcode project to build or run the iOS test schemes. These checks do not
 - The [SwiftChat README](https://github.com/sachaservan/SwiftChat#license) states that SwiftChat is available under MIT, but its linked `LICENSE` file was not available when checked. Verify the applicable upstream license and preserve its copyright and license notices before distributing the derivative. Other assets, models, services and dependencies may have separate licenses.
 - Review exposed ports, agent tool permissions and third-party services before deployment. Do not assume the included configuration is hardened for a public multi-user service.
 
+## Fan project notice
+
+Makima is an unofficial fan project inspired by the character Makima from [*Chainsaw Man*](https://www.viz.com/chainsaw-man), created by Tatsuki Fujimoto. This project is not affiliated with, endorsed by, or sponsored by the creator or rights holders. The character and related intellectual property belong to their respective rights holders. This notice does not grant permission to use or redistribute protected material.
+
 ## License
 
 Makima project contributions are made available under the [MIT License](LICENSE). The iOS app derives from [SwiftChat by Sacha Servan-Schreiber](https://github.com/sachaservan/SwiftChat); its upstream licensing and notices must be verified before distribution. Third-party code, fonts, models and assets remain subject to their own licenses and permissions; the MIT license here does not override those terms.
