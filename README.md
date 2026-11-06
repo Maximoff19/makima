@@ -201,3 +201,7 @@ Makima is an unofficial fan project inspired by the character Makima from [*Chai
 Makima project contributions are made available under the [MIT License](LICENSE). The iOS app derives from [SwiftChat by Sacha Servan-Schreiber](https://github.com/sachaservan/SwiftChat); its upstream licensing and notices must be verified before distribution. Third-party code, fonts, models and assets remain subject to their own licenses and permissions; the MIT license here does not override those terms.
 
 The optional **Awakenning Personal Use** font by Billy Argel Fonts is not distributed with the project. Its [original terms](SwiftChat/SwiftChat/Resources/AWAKENNING-LICENSE.txt) restrict it to personal use and require a separate license for commercial or other non-personal uses; they do not grant the MIT rights described above. The font is available from its [author's listing](https://www.dafont.com/awakenning.font).
+
+## Star history
+
+[![Star history chart](https://api.star-history.com/chart?repos=Maximoff19/makima&type=date&legend=top-left)](https://www.star-history.com/?repos=Maximoff19%2Fmakima&type=date&legend=top-left)
